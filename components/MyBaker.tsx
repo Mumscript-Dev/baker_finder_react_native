@@ -17,7 +17,7 @@ export default function MyBaker() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user_id: "b9bdc08b-5096-4d5c-9954-9e8d827fa252",
+        user_id: "8f50ab94-f536-46b5-975a-89171614980c",
       }),
     })
       .then((response) => {
@@ -96,54 +96,61 @@ export default function MyBaker() {
   }, []);
   return (
     <>
-      <View style={styles.info}>
+      {/* <View style={styles.info}>
         <Text style={styles.title}>My Baker</Text>
         <FontAwesome name="plus" size={15} onPress={() => createBaker()} />
-      </View>
+      </View> */}
+      {baker ? (
+        <Text style={styles.title}>My Baker</Text>
+      ) : (
+        <Text style={styles.title} onPress={() => createBaker()}>
+          Create a Baker
+        </Text>
+      )}
       {loading ? (
         <ActivityIndicator />
       ) : (
         baker && (
-          <View style={styles.baker} key={baker?.baker_id}>
-            <Card>
-              <Card.Title style={{ marginBottom: 5, fontSize: 20 }}>
-                <View style={styles.info}>
-                  <Text style={{ marginBottom: 5, fontSize: 20 }}>
-                    {baker?.name}
-                  </Text>
-                  <View style={styles.control}>
-                    <FontAwesome
-                      name="trash"
-                      size={15}
-                      onPress={() => deleteBaker(baker?.baker_id)}
-                    />
-                    <FontAwesome
-                      name="edit"
-                      size={15}
-                      onPress={() => updateBaker(baker?.baker_id)}
-                    />
-                  </View>
-                </View>
-              </Card.Title>
-
-              <Text style={{ marginBottom: 5, fontSize: 15 }}>
-                {baker?.address}, {baker?.suburb}, {baker?.postcode}
-              </Text>
+          // <View style={styles.baker} key={baker?.baker_id}>
+          <Card key={baker?.baker_id}>
+            <Card.Title style={{ marginBottom: 5, fontSize: 20 }}>
               <View style={styles.info}>
-                <Text style={{ marginBottom: 5, fontSize: 15 }}>
-                  {baker?.speciality}
+                <Text style={{ marginBottom: 5, fontSize: 20 }}>
+                  {baker?.name}
                 </Text>
                 <View style={styles.control}>
-                  <FontAwesome name="phone" size={15} />
-                  {baker?.contact}
+                  <FontAwesome
+                    name="trash"
+                    size={15}
+                    onPress={() => deleteBaker(baker?.baker_id)}
+                  />
+                  <FontAwesome
+                    name="edit"
+                    size={15}
+                    onPress={() => updateBaker(baker?.baker_id)}
+                  />
                 </View>
               </View>
-              <Card.Image
-                source={{ uri: baker?.img }}
-                style={{ width: "100%", height: 150 }}
-              />
-            </Card>
-          </View>
+            </Card.Title>
+
+            <Text style={{ marginBottom: 5, fontSize: 15 }}>
+              {baker?.address}, {baker?.suburb}, {baker?.postcode}
+            </Text>
+            <View style={styles.info}>
+              <Text style={{ marginBottom: 5, fontSize: 15 }}>
+                {baker?.speciality}
+              </Text>
+              <View style={styles.control}>
+                <FontAwesome name="phone" size={15} />
+                {baker?.contact}
+              </View>
+            </View>
+            <Card.Image
+              source={{ uri: baker?.img }}
+              style={{ width: "100%", height: 150 }}
+            />
+          </Card>
+          // </View>
         )
       )}
     </>
@@ -157,6 +164,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
+    marginBottom: 10,
+    marginTop: 30,
     fontSize: 20,
     fontWeight: "bold",
     alignSelf: "center",

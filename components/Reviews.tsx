@@ -4,10 +4,7 @@ import { Text } from "@rneui/themed";
 import { View } from "@/components/Themed";
 import { useEffect, useState } from "react";
 import { Review } from "../app/appConfig"; // Fix the import path
-import { Card } from "@rneui/themed"; // Add this import statement
-import { Rating } from "./Rating"; // Add this import statement
-import { FontAwesome } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import ReviewComponent from "./ReviewComponent";
 
 export default function Reviews() {
   const userID = "4aadc430-f636-4ec8-bf9e-46433018f3d2";
@@ -29,39 +26,6 @@ export default function Reviews() {
       });
   };
 
-  const deleteReview = async (review_id: string | undefined) => {
-    if (!review_id) return console.log("No review id provided");
-    return fetch("http://localhost:4000/v1/review", {
-      method: "Delete",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        review_id: review_id,
-      }),
-    })
-      .then((response) => response.json())
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const updateReview = async (review_id: string | undefined) => {
-    if (!review_id) return console.log("No review id provided");
-    return fetch("http://localhost:4000/v1/review", {
-      method: "Patch",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        review_id: review_id,
-      }),
-    })
-      .then((response) => response.json())
-      .catch((error) => {
-        console.log(error);
-      });
-  };
   useEffect(() => {
     getReviews().then((data) => {
       if (data && data.length > 0) {
@@ -79,47 +43,11 @@ export default function Reviews() {
         <ActivityIndicator />
       ) : (
         reviews.map((review: Review) => (
-          <View style={styles.review} key={review.review_id}>
-            <Card>
-              {userID !== review.user_id && (
-                <>
-                  <Text h4 style={{ marginBottom: 5 }}>
-                    {review.user_name}
-                  </Text>
-                  <Card.Divider />
-                </>
-              )}
-              <Card.Title>
-                <View style={styles.info}>
-                  <Link href="/baker">
-                    <Text>{review.baker_name}</Text>
-                  </Link>
-                  <Rating rating={parseInt(review.rating)} />
-                </View>
-              </Card.Title>
-              <Text style={{ marginBottom: 5, fontSize: 20 }}>
-                {review.review}
-              </Text>
-              <Card.Divider />
-              <View style={styles.cardBottom}>
-                <View style={styles.control}>
-                  <FontAwesome
-                    name="trash"
-                    size={15}
-                    onPress={() => deleteReview(review.review_id)}
-                  />
-                  <FontAwesome
-                    name="edit"
-                    size={15}
-                    onPress={() => updateReview(review.review_id)}
-                  />
-                </View>
-                <Text style={{ fontSize: 12 }}>
-                  Reviewed on {review.created_at.split("T")[0]}
-                </Text>
-              </View>
-            </Card>
-          </View>
+          <ReviewComponent
+            review={review}
+            userID={userID}
+            key={review.review_id}
+          />
         ))
       )}
     </View>
@@ -133,6 +61,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
+    marginBottom: 10,
+    marginTop: 20,
     fontSize: 20,
     fontWeight: "bold",
   },

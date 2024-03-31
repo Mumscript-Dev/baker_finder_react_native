@@ -4,9 +4,8 @@ import {
   ScrollView,
   StyleSheet,
 } from "react-native";
-import { View } from "@/components/Themed";
 import { Baker } from "../appConfig";
-import { Card, Image, Text, Button, SearchBar } from "@rneui/themed";
+import { Card, Image, Text, SearchBar } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import { Link } from "expo-router";
 
@@ -33,51 +32,47 @@ export default function TabOneScreen(navigation: any) {
     });
   }, []);
   return (
-    <View style={styles.container}>
-      <View>
-        <SearchBar
-          placeholder="Type Here..."
-          onChangeText={(text) => setSearch(text)}
-          value={search}
-          onCancel={() => setSearch("")}
-          onEndEditing={() => {
-            console.log("Search for ", search);
-          }}
-          style={styles.search}
-        />
-      </View>
+    <>
+      <SearchBar
+        placeholder="Search by Postcode"
+        onChangeText={(text) => setSearch(text)}
+        value={search}
+        onCancel={() => setSearch("")}
+        onEndEditing={() => {
+          console.log("Search for ", search);
+        }}
+        style={styles.search}
+      />
       <ScrollView style={styles.bakers}>
         {loading ? (
           <ActivityIndicator />
         ) : (
           bakers.map((baker) => (
-            <View style={styles.baker} key={baker.baker_id}>
-              <Card>
-                <Text style={{ marginBottom: 5, fontSize: 20 }}>
-                  {baker.name}
-                </Text>
-                <Image
-                  source={{ uri: baker.img }}
-                  style={{ width: "100%", height: 200 }}
-                />
-                <Link href={"/baker"} asChild>
-                  <Pressable>
-                    {({ pressed }) => (
-                      <Text
-                        style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                      >
-                        Show Details
-                      </Text>
-                    )}
-                  </Pressable>
-                </Link>
-              </Card>
-            </View>
+            <Card key={baker.baker_id}>
+              <Text style={{ marginBottom: 5, fontSize: 20 }}>
+                {baker.name}
+              </Text>
+              <Image
+                source={{ uri: baker.img }}
+                style={{ width: "100%", height: 200 }}
+              />
+              <Link href={"/baker"} asChild>
+                <Pressable>
+                  {({ pressed }) => (
+                    <Text
+                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                    >
+                      Show Details
+                    </Text>
+                  )}
+                </Pressable>
+              </Link>
+            </Card>
           ))
         )}
       </ScrollView>
       {/* <EditScreenInfo path="app/(tabs)/index.tsx" /> */}
-    </View>
+    </>
   );
 }
 
@@ -111,5 +106,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     color: "white",
     marginBottom: 5,
+    marginTop: 5,
   },
 });
