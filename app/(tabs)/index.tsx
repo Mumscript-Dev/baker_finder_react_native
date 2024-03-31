@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "expo-router";
 
 export default function TabOneScreen(navigation: any) {
-  const [search, setSearch] = useState<string | null>(null);
+  const [search, setSearch] = useState<string>("");
   const [bakers, setBakers] = useState<Baker[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const getBakers = async () => {
@@ -35,11 +35,16 @@ export default function TabOneScreen(navigation: any) {
   return (
     <View style={styles.container}>
       <View>
-        {/* <SearchBar
-          placeholder="Search by Postcode or Suburb"
+        <SearchBar
+          placeholder="Type Here..."
           onChangeText={(text) => setSearch(text)}
+          value={search}
+          onCancel={() => setSearch("")}
+          onEndEditing={() => {
+            console.log("Search for ", search);
+          }}
           style={styles.search}
-        /> */}
+        />
       </View>
       <ScrollView style={styles.bakers}>
         {loading ? (
@@ -102,7 +107,7 @@ const styles = StyleSheet.create({
     display: "flex",
   },
   search: {
-    width: "90%",
+    width: 240,
     backgroundColor: "white",
     color: "white",
     marginBottom: 5,

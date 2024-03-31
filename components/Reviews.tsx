@@ -18,7 +18,7 @@ export default function Reviews() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user_id: "b9bdc08b-5096-4d5c-9954-9e8d827fa252",
+        user_id: "4aadc430-f636-4ec8-bf9e-46433018f3d2",
       }),
     })
       .then((response) => response.json())
@@ -60,6 +60,9 @@ export default function Reviews() {
         console.log(error);
       });
   };
+  const getDate = (date: string) => {
+    return new Date(date).toISOString().split("T")[0];
+  };
   useEffect(() => {
     getReviews().then((data) => {
       if (data && data.length > 0) {
@@ -82,21 +85,27 @@ export default function Reviews() {
               <Card.Title>
                 <Rating rating={parseInt(review.rating)} />
               </Card.Title>
-              <View style={styles.control}>
-                <FontAwesome
-                  name="trash"
-                  size={15}
-                  onPress={() => deleteReview(review.review_id)}
-                />
-                <FontAwesome
-                  name="edit"
-                  size={15}
-                  onPress={() => updateReview(review.review_id)}
-                />
-              </View>
               <Text style={{ marginBottom: 5, fontSize: 20 }}>
                 {review.review}
               </Text>
+              <Card.Divider />
+              <View style={styles.cardBottom}>
+                <View style={styles.control}>
+                  <FontAwesome
+                    name="trash"
+                    size={15}
+                    onPress={() => deleteReview(review.review_id)}
+                  />
+                  <FontAwesome
+                    name="edit"
+                    size={15}
+                    onPress={() => updateReview(review.review_id)}
+                  />
+                </View>
+                <Text style={{ fontSize: 12 }}>
+                  Review on {review.created_at.split("T")[0]}
+                </Text>
+              </View>
             </Card>
           </View>
         ))
@@ -134,6 +143,12 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     gap: 5,
+    alignItems: "center",
+  },
+  cardBottom: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
   },
 });
