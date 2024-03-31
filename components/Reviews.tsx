@@ -18,7 +18,7 @@ export default function Reviews() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user_id: "4aadc430-f636-4ec8-bf9e-46433018f3d2",
+        user_id: "b9bdc08b-5096-4d5c-9954-9e8d827fa252",
       }),
     })
       .then((response) => response.json())
@@ -72,7 +72,7 @@ export default function Reviews() {
   }, []);
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Reviewed Bakers</Text>
+      <Text style={styles.title}>Baker Reviewed</Text>
       {loading ? (
         <ActivityIndicator />
       ) : (
@@ -82,16 +82,18 @@ export default function Reviews() {
               <Card.Title>
                 <Rating rating={parseInt(review.rating)} />
               </Card.Title>
-              <FontAwesome
-                name="trash"
-                size={15}
-                onPress={() => deleteReview(review.review_id)}
-              />
-              <FontAwesome
-                name="edit"
-                size={15}
-                onPress={() => updateReview(review.review_id)}
-              />
+              <View style={styles.control}>
+                <FontAwesome
+                  name="trash"
+                  size={15}
+                  onPress={() => deleteReview(review.review_id)}
+                />
+                <FontAwesome
+                  name="edit"
+                  size={15}
+                  onPress={() => updateReview(review.review_id)}
+                />
+              </View>
               <Text style={{ marginBottom: 5, fontSize: 20 }}>
                 {review.review}
               </Text>
@@ -127,5 +129,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     padding: 10,
     width: 360,
+  },
+  control: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 5,
+    alignItems: "center",
   },
 });

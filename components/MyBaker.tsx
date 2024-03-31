@@ -17,7 +17,7 @@ export default function MyBaker() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user_id: "4aadc430-f636-4ec8-bf9e-46433018f3d2",
+        user_id: "b9bdc08b-5096-4d5c-9954-9e8d827fa252",
       }),
     })
       .then((response) => {
@@ -42,7 +42,10 @@ export default function MyBaker() {
         baker_id: baker_id,
       }),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        setBaker(null);
+        return response.json();
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -64,6 +67,21 @@ export default function MyBaker() {
         console.log(error);
       });
   };
+  const createBaker = async () => {
+    return fetch("http://localhost:4000/v1/baker", {
+      method: "Post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: "b9bdc08b-5096-4d5c-9954-9e8d827fa252",
+      }),
+    })
+      .then((response) => response.json())
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   useEffect(() => {
     getBakers().then((data) => {
       if (data) {
@@ -77,41 +95,58 @@ export default function MyBaker() {
     });
   }, []);
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>My Baker</Text>
-      <FontAwesome
-        name="plus"
-        size={15}
-        onPress={() => deleteBaker(baker?.baker_id)}
-      />
+    <>
+      <View style={styles.info}>
+        <Text style={styles.title}>My Baker</Text>
+        <FontAwesome name="plus" size={15} onPress={() => createBaker()} />
+      </View>
       {loading ? (
         <ActivityIndicator />
       ) : (
         baker && (
-          <View style={styles.review} key={baker?.baker_id}>
+          <View style={styles.baker} key={baker?.baker_id}>
             <Card>
               <Card.Title style={{ marginBottom: 5, fontSize: 20 }}>
-                {baker?.name}
+                <View style={styles.info}>
+                  <Text style={{ marginBottom: 5, fontSize: 20 }}>
+                    {baker?.name}
+                  </Text>
+                  <View style={styles.control}>
+                    <FontAwesome
+                      name="trash"
+                      size={15}
+                      onPress={() => deleteBaker(baker?.baker_id)}
+                    />
+                    <FontAwesome
+                      name="edit"
+                      size={15}
+                      onPress={() => updateBaker(baker?.baker_id)}
+                    />
+                  </View>
+                </View>
               </Card.Title>
-              <FontAwesome
-                name="trash"
-                size={15}
-                onPress={() => deleteBaker(baker?.baker_id)}
-              />
-              <FontAwesome
-                name="edit"
-                size={15}
-                onPress={() => updateBaker(baker?.baker_id)}
-              />
+
+              <Text style={{ marginBottom: 5, fontSize: 15 }}>
+                {baker?.address}, {baker?.suburb}, {baker?.postcode}
+              </Text>
+              <View style={styles.info}>
+                <Text style={{ marginBottom: 5, fontSize: 15 }}>
+                  {baker?.speciality}
+                </Text>
+                <View style={styles.control}>
+                  <FontAwesome name="phone" size={15} />
+                  {baker?.contact}
+                </View>
+              </View>
               <Card.Image
                 source={{ uri: baker?.img }}
-                style={{ width: "100%", height: 200 }}
+                style={{ width: "100%", height: 150 }}
               />
             </Card>
           </View>
         )
       )}
-    </View>
+    </>
   );
 }
 
@@ -124,20 +159,38 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
+    alignSelf: "center",
   },
   separator: {
     marginVertical: 30,
     height: 1,
     width: "80%",
   },
-  reviews: {
-    paddingBottom: 20,
+  baker: {
     marginBottom: 10,
+    padding: 10,
+    width: 360,
+  },
+  bakers: {
+    marginTop: 20,
+    marginBottom: 20,
     display: "flex",
   },
   review: {
     marginBottom: 10,
     padding: 10,
     width: 360,
+  },
+  info: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  control: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 5,
+    alignItems: "center",
   },
 });

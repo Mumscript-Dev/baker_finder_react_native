@@ -6,7 +6,7 @@ interface Baker {
   suburb: string;
   postcode: string;
   contact: string;
-  specialties: string;
+  speciality: string;
 }
 
 interface Review {
