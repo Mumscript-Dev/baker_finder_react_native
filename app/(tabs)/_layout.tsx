@@ -28,7 +28,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="bakers"
         options={{
           title: "Bakers",
           tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
@@ -49,7 +49,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="account"
         options={{
           title: "My Account",
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,

@@ -3,8 +3,6 @@ import { ActivityIndicator, ScrollView, StyleSheet } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { useEffect, useState } from "react";
 import Reviews from "@/components/Reviews";
-import { Card } from "@rneui/themed"; // Add this import statement
-import { Rating } from "@/components/Rating"; // Add this import statement
 import { Review } from "../appConfig";
 import MyBaker from "@/components/MyBaker";
 
