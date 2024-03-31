@@ -7,17 +7,17 @@ import { Baker } from "../app/appConfig"; // Fix the import path
 import { Card, Image } from "@rneui/themed"; // Add this import statement
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
-export default function MyBaker() {
+export default function MyBaker({ userID }: { userID: string }) {
   const [baker, setBaker] = useState<Baker | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const getBakers = async () => {
-    return fetch("http://localhost:4000/v1/getmybaker", {
+    return fetch("https://baker-finder-go.onrender.com/v1/getmybaker", {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user_id: "8f50ab94-f536-46b5-975a-89171614980c",
+        user_id: userID,
       }),
     })
       .then((response) => {
@@ -33,7 +33,7 @@ export default function MyBaker() {
   };
   const deleteBaker = async (baker_id: string | undefined) => {
     if (!baker_id) return console.log("No baker_id");
-    return fetch("http://localhost:4000/v1/baker", {
+    return fetch("https://baker-finder-go.onrender.com/v1/baker", {
       method: "Delete",
       headers: {
         "Content-Type": "application/json",
@@ -53,7 +53,7 @@ export default function MyBaker() {
 
   const updateBaker = async (baker_id: string | undefined) => {
     if (!baker_id) return console.log("No baker_id");
-    return fetch("http://localhost:4000/v1/baker", {
+    return fetch("https://baker-finder-go.onrender.com/v1/baker", {
       method: "Patch",
       headers: {
         "Content-Type": "application/json",

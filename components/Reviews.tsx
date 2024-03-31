@@ -6,18 +6,17 @@ import { useEffect, useState } from "react";
 import { Review } from "../app/appConfig"; // Fix the import path
 import ReviewComponent from "./ReviewComponent";
 
-export default function Reviews() {
-  const userID = "4aadc430-f636-4ec8-bf9e-46433018f3d2";
+export default function Reviews({ userID }: { userID: string }) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const getReviews = async () => {
-    return fetch("http://localhost:4000/v1/listreviews", {
+    return fetch("https://baker-finder-go.onrender.com/v1/listreviews", {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user_id: "4aadc430-f636-4ec8-bf9e-46433018f3d2",
+        user_id: userID,
       }),
     })
       .then((response) => response.json())

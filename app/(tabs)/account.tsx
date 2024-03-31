@@ -7,17 +7,18 @@ import { Review } from "../appConfig";
 import MyBaker from "@/components/MyBaker";
 
 export default function TabTwoScreen() {
+  const userID = "8aa43d19-5892-4a48-af82-2f4d70105314";
   const userType = "baker";
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const getUser = async () => {
-    return fetch("http://localhost:4000/v1/listreviews", {
+    return fetch("https://baker-finder-go.onrender.com/v1/listreviews", {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user_id: "4aadc430-f636-4ec8-bf9e-46433018f3d2",
+        user_id: "8aa43d19-5892-4a48-af82-2f4d70105314",
       }),
     })
       .then((response) => response.json())
@@ -40,8 +41,8 @@ export default function TabTwoScreen() {
     <View style={styles.container}>
       {userType === "baker" ? (
         <ScrollView>
-          <MyBaker />
-          <Reviews />
+          <MyBaker userID={userID} />
+          <Reviews userID={userID} />
         </ScrollView>
       ) : (
         <ScrollView>

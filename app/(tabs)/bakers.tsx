@@ -14,7 +14,7 @@ export default function TabOneScreen(navigation: any) {
   const [bakers, setBakers] = useState<Baker[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const getBakers = async () => {
-    return fetch("http://localhost:4000/v1/listbakers")
+    return fetch("https://baker-finder-go.onrender.com/v1/listbakers")
       .then((response) => response.json())
       .catch((error) => {
         console.log(error);
@@ -32,15 +32,19 @@ export default function TabOneScreen(navigation: any) {
     });
   }, []);
   const searchBakers = async (search: string) => {
-    return fetch("http://localhost:4000/v1/getBakersByPostcode", {
-      method: "Post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        postcode: search,
-      }),
-    })
+    console.log(search);
+    return fetch(
+      "https://baker-finder-go.onrender.com/v1/getBakersByPostcode",
+      {
+        method: "Post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          postcode: search,
+        }),
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

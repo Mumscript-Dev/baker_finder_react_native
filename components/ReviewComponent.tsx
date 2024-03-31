@@ -31,7 +31,7 @@ export default function ReviewComponent(props: {
 
   const updateReview = async (review_id: string | undefined) => {
     if (!review_id) return console.log("No review id provided");
-    return fetch("http://localhost:4000/v1/review", {
+    return fetch("https://baker-finder-go.onrender.com/v1/review", {
       method: "Patch",
       headers: {
         "Content-Type": "application/json",
