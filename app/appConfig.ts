@@ -17,5 +17,6 @@ interface Review {
   user_id: string;
   created_at: string;
   baker_name: string;
+  user_name: string;
 }
 export { Baker, Review };

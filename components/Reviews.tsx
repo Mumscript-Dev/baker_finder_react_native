@@ -1,15 +1,16 @@
 import { ActivityIndicator, ScrollView, StyleSheet } from "react-native";
 
-import { Text, View } from "@/components/Themed";
+import { Text } from "@rneui/themed";
+import { View } from "@/components/Themed";
 import { useEffect, useState } from "react";
 import { Review } from "../app/appConfig"; // Fix the import path
-
 import { Card } from "@rneui/themed"; // Add this import statement
 import { Rating } from "./Rating"; // Add this import statement
 import { FontAwesome } from "@expo/vector-icons";
 import { Link } from "expo-router";
 
 export default function Reviews() {
+  const userID = "4aadc430-f636-4ec8-bf9e-46433018f3d2";
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const getReviews = async () => {
@@ -80,6 +81,14 @@ export default function Reviews() {
         reviews.map((review: Review) => (
           <View style={styles.review} key={review.review_id}>
             <Card>
+              {userID !== review.user_id && (
+                <>
+                  <Text h4 style={{ marginBottom: 5 }}>
+                    {review.user_name}
+                  </Text>
+                  <Card.Divider />
+                </>
+              )}
               <Card.Title>
                 <View style={styles.info}>
                   <Link href="/baker">

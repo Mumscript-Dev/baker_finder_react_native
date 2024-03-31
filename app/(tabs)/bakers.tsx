@@ -60,7 +60,7 @@ export default function TabOneScreen(navigation: any) {
                   source={{ uri: baker.img }}
                   style={{ width: "100%", height: 200 }}
                 />
-                <Link href="/baker" asChild>
+                <Link href={"/baker"} asChild>
                   <Pressable>
                     {({ pressed }) => (
                       <Text
