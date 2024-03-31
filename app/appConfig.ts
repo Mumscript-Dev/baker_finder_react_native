@@ -9,4 +9,11 @@ interface Baker {
   specialties: string;
 }
 
-export { Baker };
+interface Review {
+  review_id: string;
+  baker_id: string;
+  rating: string;
+  review: string;
+  user_id: string;
+}
+export { Baker, Review };

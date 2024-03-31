@@ -18,7 +18,7 @@ export default function TabOneScreen(navigation: any) {
     return fetch("http://localhost:4000/v1/listbakers")
       .then((response) => response.json())
       .catch((error) => {
-        console.error(error);
+        console.log(error);
       });
   };
 
@@ -31,7 +31,7 @@ export default function TabOneScreen(navigation: any) {
         setLoading(false);
       }
     });
-  });
+  }, []);
   return (
     <View style={styles.container}>
       <View>
