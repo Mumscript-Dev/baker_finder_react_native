@@ -7,6 +7,7 @@ import { Review } from "../app/appConfig"; // Fix the import path
 import { Card } from "@rneui/themed"; // Add this import statement
 import { Rating } from "./Rating"; // Add this import statement
 import { FontAwesome } from "@expo/vector-icons";
+import { Link } from "expo-router";
 
 export default function Reviews() {
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -60,9 +61,6 @@ export default function Reviews() {
         console.log(error);
       });
   };
-  const getDate = (date: string) => {
-    return new Date(date).toISOString().split("T")[0];
-  };
   useEffect(() => {
     getReviews().then((data) => {
       if (data && data.length > 0) {
@@ -83,7 +81,12 @@ export default function Reviews() {
           <View style={styles.review} key={review.review_id}>
             <Card>
               <Card.Title>
-                <Rating rating={parseInt(review.rating)} />
+                <View style={styles.info}>
+                  <Link href="/baker">
+                    <Text>{review.baker_name}</Text>
+                  </Link>
+                  <Rating rating={parseInt(review.rating)} />
+                </View>
               </Card.Title>
               <Text style={{ marginBottom: 5, fontSize: 20 }}>
                 {review.review}
@@ -103,7 +106,7 @@ export default function Reviews() {
                   />
                 </View>
                 <Text style={{ fontSize: 12 }}>
-                  Review on {review.created_at.split("T")[0]}
+                  Reviewed on {review.created_at.split("T")[0]}
                 </Text>
               </View>
             </Card>
@@ -146,6 +149,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   cardBottom: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  info: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
