@@ -1,18 +1,77 @@
-import { StyleSheet } from "react-native";
+import {
+  ActivityIndicator,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
+import { View } from "@/components/Themed";
+import { Baker } from "../appConfig";
+import { Card, Image, Text, Button, SearchBar } from "@rneui/themed";
+import React, { useEffect, useState } from "react";
+import { Link } from "expo-router";
 
-import EditScreenInfo from "@/components/EditScreenInfo";
-import { Text, View } from "@/components/Themed";
+export default function TabOneScreen(navigation: any) {
+  const [search, setSearch] = useState<string | null>(null);
+  const [bakers, setBakers] = useState<Baker[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const getBakers = async () => {
+    return fetch("http://localhost:4000/v1/listbakers")
+      .then((response) => response.json())
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
-export default function TabOneScreen() {
+  useEffect(() => {
+    getBakers().then((data) => {
+      if (data && data.length > 0) {
+        setBakers(data);
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
+    });
+  });
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bakers</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <View>
+        {/* <SearchBar
+          placeholder="Search by Postcode or Suburb"
+          onChangeText={(text) => setSearch(text)}
+          style={styles.search}
+        /> */}
+      </View>
+      <ScrollView style={styles.bakers}>
+        {loading ? (
+          <ActivityIndicator />
+        ) : (
+          bakers.map((baker) => (
+            <View style={styles.baker} key={baker.baker_id}>
+              <Card>
+                <Text style={{ marginBottom: 5, fontSize: 20 }}>
+                  {baker.name}
+                </Text>
+                <Image
+                  source={{ uri: baker.img }}
+                  style={{ width: "100%", height: 200 }}
+                />
+                <Link href="/baker" asChild>
+                  <Pressable>
+                    {({ pressed }) => (
+                      <Text
+                        style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                      >
+                        Show Details
+                      </Text>
+                    )}
+                  </Pressable>
+                </Link>
+              </Card>
+            </View>
+          ))
+        )}
+      </ScrollView>
+      {/* <EditScreenInfo path="app/(tabs)/index.tsx" /> */}
     </View>
   );
 }
@@ -31,5 +90,21 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: "80%",
+  },
+  baker: {
+    marginBottom: 10,
+    padding: 10,
+    width: 360,
+  },
+  bakers: {
+    paddingBottom: 20,
+    marginBottom: 10,
+    display: "flex",
+  },
+  search: {
+    width: "90%",
+    backgroundColor: "white",
+    color: "white",
+    marginBottom: 5,
   },
 });
