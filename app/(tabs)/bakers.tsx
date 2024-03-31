@@ -31,6 +31,27 @@ export default function TabOneScreen(navigation: any) {
       }
     });
   }, []);
+  const searchBakers = async (search: string) => {
+    return fetch("http://localhost:4000/v1/getBakersByPostcode", {
+      method: "Post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        postcode: search,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data && data.length > 0) {
+          setBakers(data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <>
       <SearchBar
@@ -38,9 +59,7 @@ export default function TabOneScreen(navigation: any) {
         onChangeText={(text) => setSearch(text)}
         value={search}
         onCancel={() => setSearch("")}
-        onEndEditing={() => {
-          console.log("Search for ", search);
-        }}
+        onSubmitEditing={() => searchBakers(search)}
         style={styles.search}
       />
       <ScrollView style={styles.bakers}>
@@ -103,8 +122,6 @@ const styles = StyleSheet.create({
   },
   search: {
     width: 240,
-    backgroundColor: "white",
-    color: "white",
     marginBottom: 5,
     marginTop: 5,
   },

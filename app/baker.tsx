@@ -85,27 +85,7 @@ export default function ModalScreen() {
       }
     });
   }, []);
-  // const gettingMap = () => {
-  //   const baker = state.bakers.find((baker) => baker.id === bakerId);
-  //   var bingApiKey = "apiKey";
-  //   fetch("/bingMapsKey")
-  //     .then((res) => res.json())
-  //     .then((apiKey) => {
-  //       bingApiKey = apiKey;
-  //       return fetch(
-  //         `https://dev.virtualearth.net/REST/v1/Locations?CountryRegion=AU&addressLine=${baker.address}&key=${apiKey}`
-  //       );
-  //     })
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       // get lat, long from maps api
-  //       const geo =
-  //         res.resourceSets[0].resources[0].point.coordinates.join(",");
-  //       const map = `https://dev.virtualearth.net/REST/v1/Imagery/Map/Road/${geo}/18?mapSize=1000,1000&pp=${geo};66&mapLayer=Basemap,Buildings&key=${bingApiKey}`;
 
-  //       renderViewBakerDetails(baker, map);
-  //     });
-  // };
   return (
     <ScrollView>
       <Card>

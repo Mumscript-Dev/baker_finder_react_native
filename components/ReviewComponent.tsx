@@ -89,7 +89,6 @@ export default function ReviewComponent(props: {
         </Text>
       </View>
     </Card>
-    // </View>
   );
 }
 
