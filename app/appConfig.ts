@@ -1,4 +1,5 @@
 interface Baker {
+  baker_id: string;
   name: string;
   img: string;
   address: string;
