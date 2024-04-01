@@ -14,7 +14,7 @@ export default function ModalScreen() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const fetchReviews = async () => {
     console.log("fetching baker");
-    return fetch("http://localhost:4000/v1/reviewsByBaker", {
+    return fetch("https://baker-finder-go.onrender.com/v1/reviewsByBaker", {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -36,9 +36,9 @@ export default function ModalScreen() {
   };
 
   const baker: Baker = {
-    baker_id: "877c7e45-c0f1-49aa-9506-ede42cdc55a9",
+    baker_id: "ae5d955b-6b0a-4091-af59-f33c2ac0f7db",
     img: "https://images.unsplash.com/photo-1589218909732-f304d13fbf2c?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    name: "Baker delight",
+    name: "Liam's Donuts House",
     address: "100 Rundle Street",
     suburb: "Adelaide",
     postcode: "5000",
@@ -47,7 +47,7 @@ export default function ModalScreen() {
   };
 
   const fetchApiKey = async () => {
-    return fetch("http://localhost:4000/v1/fetchkey")
+    return fetch("https://baker-finder-go.onrender.com/v1/fetchkey")
       .then((response) => response.json())
       .catch((error) => {
         console.log(error);

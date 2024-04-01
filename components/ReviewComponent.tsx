@@ -14,7 +14,7 @@ export default function ReviewComponent(props: {
 
   const deleteReview = async (review_id: string | undefined) => {
     if (!review_id) return console.log("No review id provided");
-    return fetch("http://localhost:4000/v1/review", {
+    return fetch("https://baker-finder-go.onrender.com/v1/review", {
       method: "Delete",
       headers: {
         "Content-Type": "application/json",
@@ -74,15 +74,14 @@ export default function ReviewComponent(props: {
         </>
       )}
 
-      <Card.Title>
-        <View style={styles.info}>
-          <Link href="/baker">
-            <Text>{review.baker_name}</Text>
-          </Link>
-          <Rating rating={parseInt(review.rating)} />
-        </View>
-      </Card.Title>
-      <Text style={{ marginBottom: 5, fontSize: 20 }}>{review.review}</Text>
+      <View style={styles.info}>
+        <Link href="/baker">
+          <Text style={styles.title}>{review.baker_name}</Text>
+        </Link>
+        <Rating rating={parseInt(review.rating)} />
+      </View>
+
+      <Text style={{ marginBottom: 5, fontSize: 15 }}>{review.review}</Text>
       <View style={styles.control}>
         <Text style={styles.reviewTime}>
           Reviewed on {review.created_at.split("T")[0]}
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: "bold",
   },
   separator: {
@@ -130,6 +129,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    marginBottom: 10,
   },
   reviewTime: {
     fontSize: 10,

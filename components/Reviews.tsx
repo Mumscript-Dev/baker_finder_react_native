@@ -36,20 +36,24 @@ export default function Reviews({ userID }: { userID: string }) {
     });
   }, []);
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Baker Reviewed</Text>
+    <>
       {loading ? (
-        <ActivityIndicator />
+        <ActivityIndicator style={{ marginTop: 50 }} />
+      ) : reviews?.length > 0 ? (
+        <>
+          <Text style={styles.title}>Baker Reviewed</Text>
+          {reviews.map((review: Review) => (
+            <ReviewComponent
+              review={review}
+              userID={userID}
+              key={review.review_id}
+            />
+          ))}
+        </>
       ) : (
-        reviews.map((review: Review) => (
-          <ReviewComponent
-            review={review}
-            userID={userID}
-            key={review.review_id}
-          />
-        ))
+        <Text style={styles.title}>You have not yet review any baker</Text>
       )}
-    </View>
+    </>
   );
 }
 
@@ -64,6 +68,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 20,
     fontWeight: "bold",
+    textAlign: "center",
   },
   separator: {
     marginVertical: 30,

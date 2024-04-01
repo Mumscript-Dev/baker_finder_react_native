@@ -1,27 +1,26 @@
-import { ActivityIndicator, ScrollView, StyleSheet } from "react-native";
-
-import { Text, View } from "@/components/Themed";
+import { ScrollView } from "react-native";
 import { useEffect, useState } from "react";
 import Reviews from "@/components/Reviews";
-import { Review } from "../appConfig";
+import { User } from "../appConfig";
 import MyBaker from "@/components/MyBaker";
 
 export default function TabTwoScreen() {
-  const userID = "8aa43d19-5892-4a48-af82-2f4d70105314";
-  const userType = "baker";
-  const [reviews, setReviews] = useState<Review[]>([]);
+  const userID = "eed34d29-ed97-4372-9c18-2f157c71e412";
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const getUser = async () => {
-    return fetch("https://baker-finder-go.onrender.com/v1/listreviews", {
+    return fetch("https://baker-finder-go.onrender.com/v1/getuser", {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user_id: "8aa43d19-5892-4a48-af82-2f4d70105314",
+        user_id: userID,
       }),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        return response.json();
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -29,8 +28,8 @@ export default function TabTwoScreen() {
 
   useEffect(() => {
     getUser().then((data) => {
-      if (data && data.length > 0) {
-        setReviews(data);
+      if (data) {
+        setUser(data);
         setLoading(false);
       } else {
         setLoading(false);
@@ -38,44 +37,17 @@ export default function TabTwoScreen() {
     });
   }, []);
   return (
-    <View style={styles.container}>
-      {userType === "baker" ? (
+    <>
+      {user?.user_type === "baker" ? (
         <ScrollView>
           <MyBaker userID={userID} />
           <Reviews userID={userID} />
         </ScrollView>
       ) : (
         <ScrollView>
-          <Reviews />
+          <Reviews userID={userID} />
         </ScrollView>
       )}
-    </View>
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-  reviews: {
-    paddingBottom: 20,
-    marginBottom: 10,
-    display: "flex",
-  },
-  review: {
-    marginBottom: 10,
-    padding: 10,
-    width: 360,
-  },
-});

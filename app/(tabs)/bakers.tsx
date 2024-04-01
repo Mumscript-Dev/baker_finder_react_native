@@ -8,9 +8,12 @@ import { Baker } from "../appConfig";
 import { Card, Image, Text, SearchBar } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import { Link } from "expo-router";
+import FilteredBakers from "@/components/FilteredBakers";
+import BakersComponent from "@/components/BakerComponent";
 
-export default function TabOneScreen(navigation: any) {
+export default function TabOneScreen() {
   const [search, setSearch] = useState<string>("");
+  const [searchResults, setSearchResults] = useState<Baker[] | null>(null);
   const [bakers, setBakers] = useState<Baker[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const getBakers = async () => {
@@ -32,29 +35,12 @@ export default function TabOneScreen(navigation: any) {
     });
   }, []);
   const searchBakers = async (search: string) => {
-    console.log(search);
-    return fetch(
-      "https://baker-finder-go.onrender.com/v1/getBakersByPostcode",
-      {
-        method: "Post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          postcode: search,
-        }),
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        if (data && data.length > 0) {
-          setBakers(data);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const filteredBaker = bakers.filter((baker) => baker.postcode === search);
+    setSearchResults(filteredBaker);
+  };
+  const cancelResearch = () => {
+    setSearchResults(null);
+    setSearch("");
   };
   return (
     <>
@@ -62,39 +48,26 @@ export default function TabOneScreen(navigation: any) {
         placeholder="Search by Postcode"
         onChangeText={(text) => setSearch(text)}
         value={search}
-        onCancel={() => setSearch("")}
+        onCancel={() => cancelResearch()}
         onSubmitEditing={() => searchBakers(search)}
+        onClear={() => cancelResearch()}
         style={styles.search}
       />
       <ScrollView style={styles.bakers}>
-        {loading ? (
-          <ActivityIndicator />
+        {searchResults ? (
+          <FilteredBakers searchResults={searchResults} />
         ) : (
-          bakers.map((baker) => (
-            <Card key={baker.baker_id}>
-              <Text style={{ marginBottom: 5, fontSize: 20 }}>
-                {baker.name}
-              </Text>
-              <Image
-                source={{ uri: baker.img }}
-                style={{ width: "100%", height: 200 }}
-              />
-              <Link href={"/baker"} asChild>
-                <Pressable>
-                  {({ pressed }) => (
-                    <Text
-                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                    >
-                      Show Details
-                    </Text>
-                  )}
-                </Pressable>
-              </Link>
-            </Card>
-          ))
+          <>
+            {loading ? (
+              <ActivityIndicator />
+            ) : (
+              bakers.map((baker) => (
+                <BakersComponent baker={baker} key={baker.baker_id} />
+              ))
+            )}
+          </>
         )}
       </ScrollView>
-      {/* <EditScreenInfo path="app/(tabs)/index.tsx" /> */}
     </>
   );
 }

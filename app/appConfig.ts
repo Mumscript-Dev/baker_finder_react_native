@@ -19,4 +19,10 @@ interface Review {
   baker_name: string;
   user_name: string;
 }
-export { Baker, Review };
+
+interface User {
+  user_id: string;
+  user_name: string;
+  user_type: string;
+}
+export { Baker, Review, User };

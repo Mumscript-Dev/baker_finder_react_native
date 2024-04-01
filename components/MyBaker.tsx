@@ -1,15 +1,15 @@
 import { ActivityIndicator, ScrollView, StyleSheet } from "react-native";
-
-import { Text, View } from "@/components/Themed";
+import { View } from "react-native";
+import { Text } from "@/components/Themed";
 import { useEffect, useState } from "react";
 import { Baker } from "../app/appConfig"; // Fix the import path
 
-import { Card, Image } from "@rneui/themed"; // Add this import statement
+import { Card } from "@rneui/themed"; // Add this import statement
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 export default function MyBaker({ userID }: { userID: string }) {
   const [baker, setBaker] = useState<Baker | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const getBakers = async () => {
     return fetch("https://baker-finder-go.onrender.com/v1/getmybaker", {
       method: "Post",
@@ -83,56 +83,40 @@ export default function MyBaker({ userID }: { userID: string }) {
       });
   };
   useEffect(() => {
-    getBakers().then((data) => {
+    getBakers().then((data: Baker) => {
       if (data) {
-        console.log(data);
         setBaker(data);
-        setLoading(false);
-      } else {
-        setBaker(null);
-        setLoading(false);
       }
+      setLoading(false);
     });
   }, []);
   return (
     <>
-      {/* <View style={styles.info}>
-        <Text style={styles.title}>My Baker</Text>
-        <FontAwesome name="plus" size={15} onPress={() => createBaker()} />
-      </View> */}
-      {baker ? (
-        <Text style={styles.title}>My Baker</Text>
-      ) : (
-        <Text style={styles.title} onPress={() => createBaker()}>
-          Create a Baker
-        </Text>
-      )}
       {loading ? (
-        <ActivityIndicator />
-      ) : (
-        baker && (
-          // <View style={styles.baker} key={baker?.baker_id}>
+        <ActivityIndicator style={{ marginTop: 50 }} />
+      ) : baker ? (
+        <>
+          <Text style={styles.title}>My Baker</Text>
           <Card key={baker?.baker_id}>
-            <Card.Title style={{ marginBottom: 5, fontSize: 20 }}>
-              <View style={styles.info}>
-                <Text style={{ marginBottom: 5, fontSize: 20 }}>
-                  {baker?.name}
-                </Text>
-                <View style={styles.control}>
-                  <FontAwesome
-                    name="trash"
-                    size={15}
-                    onPress={() => deleteBaker(baker?.baker_id)}
-                  />
-                  <FontAwesome
-                    name="edit"
-                    size={15}
-                    onPress={() => updateBaker(baker?.baker_id)}
-                  />
-                </View>
+            <View style={styles.info}>
+              <Text
+                style={{ marginBottom: 5, fontSize: 20, fontWeight: "bold" }}
+              >
+                {baker?.name}
+              </Text>
+              <View style={styles.control}>
+                <FontAwesome
+                  name="trash"
+                  size={20}
+                  onPress={() => deleteBaker(baker?.baker_id)}
+                />
+                <FontAwesome
+                  name="edit"
+                  size={20}
+                  onPress={() => updateBaker(baker?.baker_id)}
+                />
               </View>
-            </Card.Title>
-
+            </View>
             <Text style={{ marginBottom: 5, fontSize: 15 }}>
               {baker?.address}, {baker?.suburb}, {baker?.postcode}
             </Text>
@@ -142,7 +126,7 @@ export default function MyBaker({ userID }: { userID: string }) {
               </Text>
               <View style={styles.control}>
                 <FontAwesome name="phone" size={15} />
-                {baker?.contact}
+                <Text>{baker?.contact}</Text>
               </View>
             </View>
             <Card.Image
@@ -150,8 +134,13 @@ export default function MyBaker({ userID }: { userID: string }) {
               style={{ width: "100%", height: 150 }}
             />
           </Card>
-          // </View>
-        )
+        </>
+      ) : (
+        <>
+          <Text style={styles.title} onPress={() => createBaker()}>
+            Create a Baker
+          </Text>
+        </>
       )}
     </>
   );
@@ -164,8 +153,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    marginBottom: 10,
-    marginTop: 30,
+    marginBottom: 3,
+    marginTop: 6,
     fontSize: 20,
     fontWeight: "bold",
     alignSelf: "center",
