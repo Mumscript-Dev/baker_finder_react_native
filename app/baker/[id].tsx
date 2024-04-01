@@ -134,7 +134,27 @@ export default function BakerDetail() {
             <Text>Contact me: {baker.contact}</Text>
             <Text>speciality: {baker.speciality}</Text>
           </Card>
-          <>
+          {reviews.length > 0 ? (
+            <>
+              <Text
+                style={{
+                  fontSize: 20,
+                  textAlign: "center",
+                  marginTop: 30,
+                  marginBottom: 5,
+                }}
+              >
+                Reviews
+              </Text>
+              {reviews.map((review) => (
+                <ReviewComponent
+                  review={review}
+                  userID={userID}
+                  key={review.review_id}
+                />
+              ))}
+            </>
+          ) : (
             <Text
               style={{
                 fontSize: 20,
@@ -143,16 +163,9 @@ export default function BakerDetail() {
                 marginBottom: 5,
               }}
             >
-              Reviews
+              No review yet
             </Text>
-            {reviews.map((review) => (
-              <ReviewComponent
-                review={review}
-                userID={userID}
-                key={review.review_id}
-              />
-            ))}
-          </>
+          )}
         </>
       )}
     </ScrollView>
