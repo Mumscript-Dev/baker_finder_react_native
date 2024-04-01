@@ -5,8 +5,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { Baker } from "../app/appConfig";
-import { Card, Image, Text, SearchBar } from "@rneui/themed";
-import React, { useEffect, useState } from "react";
+import { Card, Image, Text } from "@rneui/themed";
 import { Link } from "expo-router";
 
 export default function BakersComponent({ baker }: { baker: Baker }) {
@@ -17,7 +16,12 @@ export default function BakersComponent({ baker }: { baker: Baker }) {
         source={{ uri: baker.img }}
         style={{ width: "100%", height: 200 }}
       />
-      <Link href={"/baker"} asChild>
+      <Link<{ id: string }>
+        href={{
+          pathname: `baker/[id]`,
+          params: { id: baker.baker_id },
+        }}
+      >
         <Pressable>
           {({ pressed }) => (
             <Text style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}>

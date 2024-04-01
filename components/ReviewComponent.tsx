@@ -75,7 +75,12 @@ export default function ReviewComponent(props: {
       )}
 
       <View style={styles.info}>
-        <Link href="/baker">
+        <Link<{ id: string }>
+          href={{
+            pathname: `baker/[id]`,
+            params: { id: review.baker_id },
+          }}
+        >
           <Text style={styles.title}>{review.baker_name}</Text>
         </Link>
         <Rating rating={parseInt(review.rating)} />
