@@ -2,6 +2,7 @@ import { ScrollView } from "react-native";
 import { useEffect, useState } from "react";
 import Reviews from "@/components/Reviews";
 import { User } from "../appConfig";
+import { Text } from "@/components/Themed";
 import MyBaker from "@/components/MyBaker";
 
 export default function TabTwoScreen() {
@@ -38,6 +39,9 @@ export default function TabTwoScreen() {
   }, []);
   return (
     <>
+      <Text style={{ textAlign: "center", fontSize: 15, fontWeight: "bold" }}>
+        Welcome back, {user?.user_name}
+      </Text>
       {user?.user_type === "baker" ? (
         <ScrollView>
           <MyBaker userID={userID} />
