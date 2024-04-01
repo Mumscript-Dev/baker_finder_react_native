@@ -54,7 +54,7 @@ export default function MyBaker({ userID }: { userID: string }) {
   const updateBaker = async (baker_id: string | undefined) => {
     if (!baker_id) return console.log("No baker_id");
     return fetch("https://baker-finder-go.onrender.com/v1/baker", {
-      method: "Patch",
+      method: "Put",
       headers: {
         "Content-Type": "application/json",
       },
